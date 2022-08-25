@@ -65,7 +65,7 @@ ssize_t c_getline (char **lineptr, size_t *n, FILE *stream)
 
     if (*lineptr == NULL)
     {
-        _UNWRAP (*lineptr = (char*) calloc (_INITIAL_SIZE * sizeof (char)));
+        _UNWRAP (*lineptr = (char*) calloc (_INITIAL_SIZE, sizeof (char)));
 
         *n = _INITIAL_SIZE;
     }
@@ -78,8 +78,9 @@ ssize_t c_getline (char **lineptr, size_t *n, FILE *stream)
 
         if (pos == *n - 1)
         {
-            *n *= 2;
-            _UNWRAP (*lineptr = (char *) realloc (*lineptr, *n * sizeof (char)));
+            char *lineptr_p_tmp = *lineptr;
+            _UNWRAP (lineptr_p_tmp = (char *) realloc (*lineptr, 2 * (*n) * sizeof (char)));
+            *lineptr = lineptr_p_tmp;
         }
 
         (*lineptr)[pos] = (char) ch;
