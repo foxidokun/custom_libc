@@ -40,15 +40,12 @@ char *c_strcpy (char *dest, const char *src)
 
     size_t pos = 0;
 
-    //TODO do while maybe...
-    //TODO strlen + memcpy maybe...
-
     for (pos = 0; src[pos] != '\0'; ++pos)
     {
         dest[pos] = src[pos];
     }
 
-    dest[pos] = src[pos];
+    dest[pos] = '\0';
 
     return dest;
 }
@@ -108,8 +105,8 @@ char *c_strdup (const char *src)
 {
     assert (src != NULL && "pointer can't be NULL");
 
-    size_t len = c_strlen (src) + 1;
-    char *dest = (char *) malloc (len * sizeof (char));
+    size_t len = c_strlen (src);
+    char *dest = (char *) malloc ((len + 1)  * sizeof (char));
 
     if (dest == NULL)
     {

@@ -5,7 +5,6 @@
 #include "c_stdio.h"
 #include "c_stdio.h"
 
-
 #define _UNWRAP(expr) { if ((expr) == NULL) {return -1;} }
 
 int c_puts (const char *str)
