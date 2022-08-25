@@ -14,20 +14,20 @@ size_t c_strlen (const char* str)
     return pos;
 }
 
-
 char *c_strchr (const char *str, int ch)
 {
     assert (str != NULL && "pointer can't be NULL");
 
-    // СПРОСИТЬ про конвертацию
-    char *cur = (char *) str;
+    size_t pos = 0;
 
-    while (*cur != '\0')
+    while (str[pos] != '\0' || ch == '\0')
     {
-        if (*cur == ch)
+        if (str[pos] == ch)
         {
-            return cur;
+            return (char *)(str + pos);
         }
+
+        pos++;
     }
 
     return NULL;
@@ -70,6 +70,7 @@ char *c_strncpy (char *dest, const char *src, size_t count)
     while (pos < count)
     {
         dest[pos] = '\0';
+        pos++;
     }
 
     return dest;
@@ -87,6 +88,8 @@ char *c_strcat (char *dest, const char *src)
     return dest;
 }
 
+#include <stdio.h>
+
 char *c_strncat (char *dest, const char *src, size_t count)
 {
     assert (dest != NULL && "pointer can't be NULL");
@@ -94,7 +97,7 @@ char *c_strncat (char *dest, const char *src, size_t count)
 
     size_t pos = c_strlen (dest);
 
-    c_strncpy ((dest + pos), src, count);
+    c_strncpy (&dest[pos], src, count);
 
     dest[pos + count] = '\0';
 
@@ -105,7 +108,7 @@ char *c_strdup (const char *src)
 {
     assert (src != NULL && "pointer can't be NULL");
 
-    size_t len = c_strlen (src);
+    size_t len = c_strlen (src) + 1;
     char *dest = (char *) malloc (len * sizeof (char));
 
     if (dest == NULL)

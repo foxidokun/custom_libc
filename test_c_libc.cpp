@@ -1,4 +1,5 @@
 #include <string.h>
+#include <assert.h>
 #include "c_stdio.h"
 #include "c_string.h"
 #include "test_c_libc.h"
@@ -26,6 +27,8 @@ void test_c_puts ()
 
 int test_c_fgets (FILE *in_stream)
 {
+    assert (in_stream != NULL && "pointer can't be NULL");
+
     const int _MAX_LINE_LEN = 16;
     char buf[_MAX_LINE_LEN] = "";
 
@@ -51,6 +54,8 @@ int test_c_fgets (FILE *in_stream)
 
 int test_c_getline (FILE *in_stream)
 {
+    assert (in_stream != NULL && "pointer can't be NULL");
+
     char   *buf = strdup("CW");
     size_t b_size = 2;
     ssize_t len = 0;
@@ -71,16 +76,123 @@ int test_c_getline (FILE *in_stream)
     return 0;
 }
 
+int test_c_strlen ()
+{
+    _TEST (c_strlen("HELLO")   == 5);
+    _TEST (c_strlen("HELLO\n") == 6);
+    _TEST (c_strlen("")        == 0);
+
+    _REPORT_OK();
+    return 0;
+}
+
+int test_c_strchr ()
+{
+    _TEST (*c_strchr ("hello", 'h') == 'h');
+    _TEST (*c_strchr ("hello", 'o') == 'o');
+    _TEST (*c_strchr ("hello", '\0') == '\0');
+
+    _REPORT_OK();
+    return 0;
+}
+
+int test_c_strcpy ()
+{
+    char dest[15] = "";
+    char  src[15] = "lol\nmem\b3";
+
+    _TEST (c_strcpy(dest, src) != NULL);
+    _TEST (strcmp(dest, src) == 0);
+
+    _REPORT_OK();
+    return 0;
+}
+
+int test_c_strncpy ()
+{
+    const int LEN = 15;
+    char dest[LEN] = "";
+    char  src[LEN] = "lol\nmem\b3";
+
+    _TEST (c_strncpy (dest, src, LEN) != NULL);
+    _TEST (strcmp (dest, src) == 0);
+
+    src[0] = 'c';
+    src[1] = 'd';
+    src[2] = 'q';
+    _TEST (c_strncpy (dest, src, 3) != NULL);
+    _TEST (strcmp (dest, "cdq\nmem\b3") == 0);
+
+    _REPORT_OK();
+    return 0;
+}
+
+int test_c_strcat ()
+{
+    const int LEN = 15;
+    char  src[LEN] = "test";
+    char dest[LEN] = "hate";
+
+    _TEST (c_strcat (dest, src) != NULL);
+    _TEST (strcmp (dest, "hatetest") == 0);
+
+    _REPORT_OK();
+    return 0;
+}
+
+int test_c_strncat ()
+{
+    const int LEN = 15;
+    char  src[LEN] = "test";
+    char dest[2*LEN] = "hate";
+
+    _TEST (c_strncat (dest, src, LEN) != NULL);
+    _TEST (strcmp (dest, "hatetest") == 0);
+
+    src[0] = 's';
+
+    _TEST (c_strncat (dest, src, 1) != NULL);
+    _TEST (strcmp (dest, "hatetests") == 0);
+
+    _REPORT_OK();
+    return 0;
+}
+
+int test_c_strdup ()
+{
+    char *src  = "Lolc";
+    char *dest = c_strdup (src);
+
+    _TEST (dest != NULL);
+    _TEST (strcmp (dest, src) == 0);
+
+    free (dest);
+    _REPORT_OK();
+    return 0;
+}
+
 void run_tests (char *input_file)
 {
+    assert (input_file != NULL && "pointer can't be NULL");
+
     FILE *in_stream = fopen (input_file, "r");
 
     test_c_puts ();
     test_c_fgets   (in_stream);
+
     fseek (in_stream, 0, SEEK_SET);
+
     test_c_getline (in_stream);
 
     fclose (in_stream);
+
+    test_c_strlen();
+    test_c_strchr ();
+    test_c_strcpy ();
+    test_c_strncpy ();
+    test_c_strcat ();
+    test_c_strncat ();
+    test_c_strdup ();
 }
 
 #undef _TEST
