@@ -106,7 +106,7 @@ char *c_strdup (const char *src)
     assert (src != NULL && "pointer can't be NULL");
 
     size_t len = c_strlen (src);
-    char *dest = (char *) malloc ((len + 1)  * sizeof (char));
+    char *dest = (char *) calloc ((len + 1), sizeof (char));
 
     if (dest == NULL)
     {

@@ -60,12 +60,12 @@ ssize_t c_getline (char **lineptr, size_t *n, FILE *stream)
     assert (stream  != NULL && "pointer can't be NULL");
 
     const size_t _INITIAL_SIZE = 64;
-    ssize_t pos = 0;
+    size_t pos = 0;
     int ch = '\0';
 
     if (*lineptr == NULL)
     {
-        _UNWRAP (*lineptr = (char*) malloc (_INITIAL_SIZE * sizeof (char)));
+        _UNWRAP (*lineptr = (char*) calloc (_INITIAL_SIZE * sizeof (char)));
 
         *n = _INITIAL_SIZE;
     }
@@ -88,7 +88,7 @@ ssize_t c_getline (char **lineptr, size_t *n, FILE *stream)
     }
 
     (*lineptr)[pos] = '\0';
-    return pos;
+    return (ssize_t) pos;
 }
 
 #undef _UNWRAP

@@ -22,9 +22,6 @@ run: $(BINDIR)/$(PROJ)
 clean:
 	$(SAFETY_COMMAND) && rm -rf $(ODIR) $(BINDIR)
 
-test: #TODO генерелизовать с обычными запусками
-	mkdir -p bin && g++ -o $(BINDIR)/$(PROJ)_test main.cpp $(CFLAGS) -D TEST && $(BINDIR)/$(PROJ)_test
-
 .PHONY: clean
 
 $(ODIR):

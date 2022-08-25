@@ -210,7 +210,7 @@ void run_tests (char *input_file)
     _CNT_TEST (test_c_strncat ());
     _CNT_TEST (test_c_strdup  ());
 
-    printf ("==============");
+    printf ("==============\n");
     printf ("Tests OK:" G "%d" D " Failed:" R " %d " D "Success ratio: %3.1f%%\n",
            success, failed, success * 100.0 / (success + failed));
 }
