@@ -12,13 +12,15 @@ int c_puts (const char *str)
 {
 	assert (str != NULL && "pointer can't be NULL");
 
-    for (size_t pos = 0; str[pos] != '\n'; ++pos)
+    for (size_t pos = 0; str[pos] != '\0'; ++pos)
     {
         if (putchar (str[pos]) == EOF)
         {
             return EOF;
         }
     }
+
+    putchar ('\n');
 
     return 1;
 }
@@ -30,17 +32,26 @@ char *c_fgets (char *str, int count, FILE *stream)
 
     int ch = '\0';
 
-    for (size_t pos = 0; pos < count - 1; ++pos)
+    for (size_t pos = 0; pos < (size_t) count - 1; ++pos)
     {
         ch = getc (stream);
 
-        if (ch == EOF) return NULL;
+        if (ch == EOF)
+        {
+            str[pos] = '\0';
+            return str;
+        }
 
-        str[pos] = ch;
+        str[pos] = (char) ch;
 
-        if (ch == '\n') break;
+        if (ch == '\n')
+        {
+            str[pos + 1] = '\0';
+            return str;
+        }
     }
 
+    str[count - 1] = '\0';
     return str;
 }
 
@@ -49,7 +60,7 @@ ssize_t c_getline (char **lineptr, size_t *n, FILE *stream)
     assert (lineptr != NULL && "pointer can't be NULL");
     assert (stream  != NULL && "pointer can't be NULL");
 
-    const int _INITIAL_SIZE = 64;
+    const size_t _INITIAL_SIZE = 64;
     ssize_t pos = 0;
     int ch = '\0';
 
@@ -69,12 +80,15 @@ ssize_t c_getline (char **lineptr, size_t *n, FILE *stream)
         if (pos == *n - 1)
         {
             *n *= 2;
-            _UNWRAP (*lineptr = (char *) realloc(*lineptr, *n * sizeof (char)));
+            _UNWRAP (*lineptr = (char *) realloc (*lineptr, *n * sizeof (char)));
         }
 
-        *lineptr[pos] = ch;
+        (*lineptr)[pos] = (char) ch;
+
+        pos++;
     }
 
+    (*lineptr)[pos] = '\0';
     return pos;
 }
 
