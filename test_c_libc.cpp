@@ -172,7 +172,7 @@ int test_c_strncat ()
 
 int test_c_strdup ()
 {
-    char *src  = "Lolc";
+    const char *src  = "Lolc";
     char *dest = c_strdup (src);
 
     _TEST (dest != NULL);
@@ -185,7 +185,7 @@ int test_c_strdup ()
 
 #define _CNT_TEST(expr) { if ((expr)) { failed++; } else { success++; }}
 
-void run_tests (char *input_file)
+void run_tests (const char *input_file)
 {
     assert (input_file != NULL && "pointer can't be NULL");
 

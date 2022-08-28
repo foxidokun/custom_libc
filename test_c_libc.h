@@ -36,6 +36,6 @@ int test_c_strdup  ();
 
 /// @brief run all test
 /// @param[in] input_file File with reference input
-void run_tests (char *input_file);
+void run_tests (const char *input_file);
 
 #endif
